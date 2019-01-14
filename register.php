@@ -2,24 +2,48 @@
 	$currentDir = getcwd();
 	$ds = DIRECTORY_SEPARATOR;
 	require_once $currentDir . $ds .   'includes' . $ds . 'config.php';
+	  require_once $currentDir . $ds . 'includes' . $ds . 'validation.php';
+
 	if(isset($_SESSION['userId'])){
 		header('Location: downloads.php');
 	}
 
 
 if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_POST['email'])){
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$password_hash = md5($password);
-	$confirm_password = $_POST['confirm_password'];
-	$email = $_POST['email'];
+	$errors = [];
+	$username = validateData($_POST['username']);
+	$password = validateData($_POST['password']);
+	$password_hash = md5(validateData($password));
+	$confirm_password = validateData($_POST['confirm_password']);
+	$email = validateData($_POST['email']);
 
+	
 	if(!empty($username) || !empty($password) || !empty($confirm_password) || !empty($email)){
+		$query = "SELECT $username FROM users WHERE username = '$username'";
+		$query_run = mysqli_query($db, $query);
+		if($query_run){
+		if(mysqli_num_rows($query_run) > 0){
+			$errors[0] =  "Sorry, the username has been taken";
+			return false;
+		}
+	}
+		if(validateEmail($email == false)){
+			$errors[1] =  "Please enter a valid email";
+			return false;
+		}
 		$query = "SELECT * FROM users WHERE username = '$username'";
 		$query_run = mysqli_query($db, $query);
 
 		if(mysqli_num_rows($query_run) == 1){
-			echo 'Username: <strong> ' . $username . '</strong>' . ' is taken already';
+
+			$errors[2] =  'Username: <strong> ' . $username . '</strong>' . ' is taken already';
+		}else{
+			$query = "SELECT * FROM users WHERE email = '$email'";
+			$query_run = mysqli_query($db, $query);
+			if($query_run){
+			if(mysqli_num_rows($query_run) == 1){
+
+			$errors[3] =  'Email: <strong> ' . $email . '</strong>' . ' is taken already';
 		}else{
 			if($password == $confirm_password){
 				$query = "INSERT INTO users (username, email, password) VALUES('$username', '$email',  '$password_hash')";
@@ -32,11 +56,13 @@ if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_P
 				}
 
 			}else{
-				echo "Both password fields must be equal";
+				$errors[4] =  "Both password fields must be equal";
 			}
 		}
+	}
+		}
 	}else{
-		echo "All fields should be filled";
+		$errors[5] =  "All fields should be filled";
 	}
 }
 
@@ -56,7 +82,15 @@ if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_P
 </head>
 
 <body>
+<div class="container">
 <?php require_once $currentDir . $ds . 'includes' . $ds . 'templates' . $ds . 'nav.php'; ?>
+<h1>User Registration</h1>
+<ul>
+<?php foreach($errors as $error){
+	echo '<li>' .$error .  '</li>';
+} 
+?>
+</ul>
 <form action="" method="POST">
 <label for="username">Username</label>
 <input type="text" name="username">
@@ -69,7 +103,7 @@ if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_P
 
 
 <label for="password">Password</label>
-<input type="confirm_password" name="confirm_password">
+<input type="password" name="confirm_password">
 
 <input type="submit" value="Register">
 

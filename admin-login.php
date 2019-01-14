@@ -2,15 +2,17 @@
 	$currentDir = getcwd();
 	$ds = DIRECTORY_SEPARATOR;
   require_once $currentDir . $ds .   'includes' . $ds . 'config.php';
+  require_once $currentDir . $ds . 'includes' . $ds . 'validation.php';
+
   
 	if(isset($_SESSION['adminId'])){
 		header('Location: dashboard.php');
 	}
 	
 	if(isset($_POST['username'], $_POST['password'])){
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-		$password_hash = md5($password);
+		$username = validateData($_POST['username']);
+		$password = validateData($_POST['password']);
+		$password_hash = md5(validateData($password));
 
 		if(!empty($username) && !empty($password)){	
 			if(strlen($username) >= 6 && strlen($password) >= 6){
