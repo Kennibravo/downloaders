@@ -18,4 +18,10 @@ $userProfileData = get('id,username,email,password', 'users', 'id', $userId);
 }
 
 
+if(isset($_SESSION['adminId'])){
+$adminId = $_SESSION['adminId'];
+$admin = get('username,id', 'users', 'id', $adminId);
+$userProfileData = get('id,username,email,password', 'users', 'id', $adminId);
+}
+
 ?>

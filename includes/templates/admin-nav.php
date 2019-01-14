@@ -4,7 +4,7 @@
       <?php if(isset($_SESSION['adminId'])){ ?>
       <ul class="right hide-on-med-and-down">
        
-        <li><a href="profile.php?id=<?php echo $admin['id']; ?>"><?php echo $admin['username']; ?></a></li>
+        <li><a href="admin-profile.php?id=<?php echo $admin['id']; ?>"><?php echo $admin['username']; ?></a></li>
         <li><a href="admin-logout.php">Logout</a></li>
         <li><a href="downloads.php">Downloads</a></li>
         

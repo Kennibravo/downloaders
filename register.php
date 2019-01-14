@@ -85,7 +85,7 @@ if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_P
 <div class="container">
 <?php require_once $currentDir . $ds . 'includes' . $ds . 'templates' . $ds . 'nav.php'; ?>
 <h1>User Registration</h1>
-<ul>
+<ul></ul>
 <?php foreach($errors as $error){
 	echo '<li>' .$error .  '</li>';
 } 

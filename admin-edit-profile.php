@@ -1,19 +1,14 @@
 <?php 
 
 
-require_once $currentDir . $ds .  'helpers.php';
+require_once $currentDir . $ds .  'admin-helper.php';
 require_once $currentDir . $ds . 'includes' . $ds . 'validation.php';
 
 $id = $_GET['id'];
-if($id != $userId){
+if($id != $adminId){
   header('Location: 404.php');
 }
 
-if(isset($_SESSION['adminId'])){
-  $adminId = $_SESSION['adminId'];
-  $admin = get('username,id', 'admins', 'id', $adminId);
-  $adminProfileData = get('id,username,email,password', 'admins', 'id', $adminId);
-}
 
 
 if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_POST['email'])){
@@ -26,12 +21,12 @@ if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_P
 	if(!empty($username) || !empty($password) || !empty($confirm_password) || !empty($email)){
 
 		if($password == $confirm_password && !$password){
-			$query = "UPDATE users SET username = '$username', password = '$password_hash', email = '$email' WHERE id = '$userId'";
+			$query = "UPDATE admins SET username = '$username', password = '$password_hash', email = '$email' WHERE id = '$adminId'";
 			$query_run = mysqli_query($db, $query);
 
 
 			if(mysqli_affected_rows($db) == 1){
-				header('Location: profile.php?id=$userId');
+				header('Location: profile.php?id=$adminId');
 				echo "OK";
 			}else{
 				echo "Sorry, there are some problems with your data";
@@ -63,18 +58,18 @@ if(isset($_POST['username'], $_POST['password'], $_POST['confirm_password'], $_P
 
 <body>
 <div class="container">
-<?php require_once $currentDir . $ds . 'includes' . $ds . 'templates' . $ds . 'nav.php'; ?>
+<?php require_once $currentDir . $ds . 'includes' . $ds . 'templates' . $ds . 'admin-nav.php'; ?>
 <br><br>
 	<form action="" method="POST">
 	<div class="row">
 
       <div class="row">
         <div class="input-field col s6">
-          <input id="username" type="text"  value="<?php echo $userProfileData['username']; ?>" name="username" disabled="">
+          <input id="username" type="text"  value="<?php echo $adminProfileData['username']; ?>" name="username" disabled="">
           <label for="username" class="active">Username</label>
         </div>
         <div class="input-field col s6">
-          <input id="email" type="email"  value="<?php echo $userProfileData['email']; ?>" name="email" disabled="">
+          <input id="email" type="email"  value="<?php echo $adminProfileData['email']; ?>" name="email" disabled="">
           <label for="email" class="active">Email-Address</label>
         </div>
       </div>
