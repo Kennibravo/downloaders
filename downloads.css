@@ -1,0 +1,48 @@
+/* The style rules for the pages of the downloads system. */
+@charset "utf-8";
+
+a {
+	text-decoration: none;
+}
+.page-title {
+	text-align: center;
+}
+.page-subtitle {
+	display: inline-block; color: #777; font-size: 75%; margin: 5px 15%; text-align: center; line-height: 1.5;
+}
+.download {
+	border: 1px solid #aaa; border-radius: 5px; margin: 20px 5%; display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+}
+.download-title {
+	width: 75%; padding: 5px 1.5%;
+}
+.download-url {
+	width: 40px; height: 40px; border-radius: 50%; align-self: flex-end; 
+}
+#upload-docs {
+	margin: 0 auto; padding-bottom: 15px; border-bottom: 1.5px groove #666;
+}
+#upload-form {
+	margin: 15px auto;
+}
+#upload-form input {
+	display: block; width: 80%; margin: 5px auto; padding: 5px; border: 1px solid #aaa;
+}
+input[type='text'] {
+	
+}
+input[type='file'] {
+
+}
+#upload-form input[type='submit'] {
+	width: 40%;  border-radius: 3.5px;
+}
+input[type='submit']:hover {
+	color: #3672FF; background-color: #FFF;
+}
+#uploaded-docs {
+
+}
+#report {
+	text-align: center; font-size: 80%;
+}
